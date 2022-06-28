@@ -1,6 +1,5 @@
 <?php
 /**
-
  * @var $connection PDO
  */
 include 'koneksi.php';
@@ -23,48 +22,42 @@ if($_SERVER['REQUEST_METHOD'] !== 'POST'){
 /**
  * Get input data POST
  */
-$id_barang = $_POST['id_barang'] ?? '';
-$nama_barang = $_POST['nama_barang'] ?? '';
-$harga_barang = $_POST['harga_barang'] ?? '';
-$tanggal_masuk = $_POST['tanggal_masuk'] ?? date('Y-m-d');
-$tanggal_keluar = $_POST['tanggal_keluar'] ?? date('Y-m-d');
-$stok = $_POST['stok'] ?? '' ;
+$nik = $_POST['nik'] ?? '';
+$nama = $_POST['nama'] ?? '';
+$tanggallahir = $_POST['tanggallahir'] ?? date('Y-m-d');
+$alamat = $_POST['alamat'] ?? '' ;
+$jabatan = $_POST['jabatan'] ?? '';
+$nohp = $_POST['nohp'] ?? '';
 
 /**
  * Validation int value
  */
-$id_barangFilter = filter_var($id_barang, FILTER_VALIDATE_INT);
-$stokFilter = filter_var($stok, FILTER_VALIDATE_INT);
+$nohpFilter = filter_var($nohp, FILTER_VALIDATE_INT);
 
 /**
  * Validation empty fields
  */
 $isValidated = true;
-if($id_barangFilter === false){
-    $reply['error'] = "id barang  harus format INT";
+if($nohpFilter === false){
+    $reply['error'] = "No Hp  harus format INT";
     $isValidated = false;
 }
-if($stokFilter === false){
-    $reply['error'] = "stok harus format INT";
+if(empty($nik)){
+    $reply['error'] = 'nik harus diisi';
     $isValidated = false;
 }
-if(empty($nama_barang)){
-    $reply['error'] = 'nama barang harus diisi';
+if(empty($nama)){
+    $reply['error'] = 'Nama harus diisi';
     $isValidated = false;
 }
-if(empty($harga_barang)){
-    $reply['error'] = 'harga barang harus diisi';
+if(empty($alamat)){
+    $reply['error'] = 'Alamat harus diisi';
     $isValidated = false;
 }
-if(empty($tanggal_masuk)){
-    $reply['error'] = 'tanggal masuk harus diisi';
+if(empty($jabatan)){
+    $reply['error'] = 'Jabatan harus diisi';
     $isValidated = false;
 }
-if(empty($tanggal_keluar)){
-    $reply['error'] = 'tanggal keluar harus diisi';
-    $isValidated = false;
-}
-
 
 /*
  * Jika filter gagal
@@ -81,18 +74,18 @@ if(!$isValidated){
  * Prepare query
  */
 try{
-    $query = "INSERT INTO barang (kode_barang, nama_barang, jumlah_barang, harga_barang, tanggal_masuk, tanggal_kadarluwasa) 
-VALUES (:kode_barang, :nama_barang, :jumlah_barang, :harga_barang, :tanggal_masuk, :tanggal_kadarluwasa)";
+    $query = "INSERT INTO karyawan (nik, nama, tanggallahir, alamat, jabatan, nohp) 
+VALUES (:nik, :nama, :tanggallahir, :alamat, :jabatan, :nohp)";
     $statement = $connection->prepare($query);
     /**
      * Bind params
      */
-    $statement->bindValue(":id_barang", $id_barang);
-    $statement->bindValue(":nama_barang", $nama_barang);
-    $statement->bindValue(":jumlah_barang", $jumlah_barang);
-    $statement->bindValue(":harga_barang", $harga_barang);
-    $statement->bindValue(":tanggal_masuk", $tanggal_masuk);
-    $statement->bindValue(":tanggal_kadarluwasa", $tanggal_kadarluwasa, PDO::PARAM_INT);
+    $statement->bindValue(":nik", $nik);
+    $statement->bindValue(":nama", $nama);
+    $statement->bindValue(":tanggallahir", $tanggallahir);
+    $statement->bindValue(":alamat", $alamat);
+    $statement->bindValue(":jabatan", $jabatan);
+    $statement->bindValue(":nohp", $nohp, PDO::PARAM_INT);
     /**
      * Execute query
      */

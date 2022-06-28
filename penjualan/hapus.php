@@ -1,8 +1,5 @@
 <?php
 /**
- * Created by Pizaini <pizaini@uin-suska.ac.id>
- * Date: 02/06/2022
- * Time: 20:07
  * @var $connection PDO
  */
 include 'koneksi.php';
