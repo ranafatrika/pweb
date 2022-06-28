@@ -26,6 +26,7 @@ if($_SERVER['REQUEST_METHOD'] !== 'POST'){
 $id_barang = $_POST['id_barang'] ?? '';
 $nama_barang = $_POST['nama_barang'] ?? '';
 $harga_barang = $_POST['harga_barang'] ?? '';
+$jumlah_barang =$_POST['jumlah_barang']??'';
 $tanggal_masuk = $_POST['tanggal_masuk'] ?? date('Y-m-d');
 $tanggal_keluar = $_POST['tanggal_keluar'] ?? date('Y-m-d');
 $stok = $_POST['stok'] ?? '' ;
@@ -81,18 +82,18 @@ if(!$isValidated){
  * Prepare query
  */
 try{
-    $query = "INSERT INTO barang (kode_barang, nama_barang, jumlah_barang, harga_barang, tanggal_masuk, tanggal_kadarluwasa) 
-VALUES (:kode_barang, :nama_barang, :jumlah_barang, :harga_barang, :tanggal_masuk, :tanggal_kadarluwasa)";
+    $query = "INSERT INTO barang (id_barang, nama_barang, jumlah_barang, harga_barang, tanggal_masuk, tanggal_keluar) 
+VALUES (:id_barang, :nama_barang, :jumlah_barang, :harga_barang, :tanggal_masuk, :tanggal_keluar)";
     $statement = $connection->prepare($query);
     /**
      * Bind params
      */
     $statement->bindValue(":id_barang", $id_barang);
     $statement->bindValue(":nama_barang", $nama_barang);
-    $statement->bindValue(":jumlah_barang", $jumlah_barang);
+    $statement->bindValue(":jumlah_barang", $jumlah_barang,PDO::PARAM_INT );
     $statement->bindValue(":harga_barang", $harga_barang);
     $statement->bindValue(":tanggal_masuk", $tanggal_masuk);
-    $statement->bindValue(":tanggal_kadarluwasa", $tanggal_kadarluwasa, PDO::PARAM_INT);
+    $statement->bindValue(":tanggal_kadarluwasa", $tanggal_keluar, PDO::PARAM_INT);
     /**
      * Execute query
      */

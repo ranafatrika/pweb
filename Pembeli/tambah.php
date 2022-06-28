@@ -22,42 +22,27 @@ if($_SERVER['REQUEST_METHOD'] !== 'POST'){
 /**
  * Get input data POST
  */
-$nik = $_POST['nik'] ?? '';
-$nama = $_POST['nama'] ?? '';
-$tanggallahir = $_POST['tanggallahir'] ?? date('Y-m-d');
-$alamat = $_POST['alamat'] ?? '' ;
-$jabatan = $_POST['jabatan'] ?? '';
-$nohp = $_POST['nohp'] ?? '';
+$id_pembeli = $_POST['id_pembeli'] ?? '';
+$nama_pembeli = $_POST['nama_pembeli'] ?? '';
 
 /**
  * Validation int value
  */
-$nohpFilter = filter_var($nohp, FILTER_VALIDATE_INT);
+$id_pembeliFilter = filter_var($id_pembeli, FILTER_VALIDATE_INT);
 
 /**
  * Validation empty fields
  */
 $isValidated = true;
-if($nohpFilter === false){
-    $reply['error'] = "No Hp  harus format INT";
+if($id_pembeliFilter === false){
+    $reply['error'] = "id pembeli  harus format INT";
     $isValidated = false;
 }
-if(empty($nik)){
-    $reply['error'] = 'nik harus diisi';
+if(empty($nama_pembeli)){
+    $reply['error'] = 'nama pembeli harus diisi';
     $isValidated = false;
 }
-if(empty($nama)){
-    $reply['error'] = 'Nama harus diisi';
-    $isValidated = false;
-}
-if(empty($alamat)){
-    $reply['error'] = 'Alamat harus diisi';
-    $isValidated = false;
-}
-if(empty($jabatan)){
-    $reply['error'] = 'Jabatan harus diisi';
-    $isValidated = false;
-}
+
 
 /*
  * Jika filter gagal
@@ -74,18 +59,14 @@ if(!$isValidated){
  * Prepare query
  */
 try{
-    $query = "INSERT INTO karyawan (nik, nama, tanggallahir, alamat, jabatan, nohp) 
-VALUES (:nik, :nama, :tanggallahir, :alamat, :jabatan, :nohp)";
+    $query = "INSERT INTO pembeli (id_pembeli, nama_pembeli) 
+VALUES (:id_pembeli, :nama_pembeli)";
     $statement = $connection->prepare($query);
     /**
      * Bind params
      */
-    $statement->bindValue(":nik", $nik);
-    $statement->bindValue(":nama", $nama);
-    $statement->bindValue(":tanggallahir", $tanggallahir);
-    $statement->bindValue(":alamat", $alamat);
-    $statement->bindValue(":jabatan", $jabatan);
-    $statement->bindValue(":nohp", $nohp, PDO::PARAM_INT);
+    $statement->bindValue(":id_pembeli", $id_pembeli, PDO::PARAM_INT);
+    $statement->bindValue(":nama_pembeli", $nama_pembeli);
     /**
      * Execute query
      */

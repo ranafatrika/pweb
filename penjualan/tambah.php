@@ -22,43 +22,49 @@ if($_SERVER['REQUEST_METHOD'] !== 'POST'){
 /**
  * Get input data POST
  */
-$kode_barang = $_POST['kode_barang'] ?? '';
-$nama_barang = $_POST['nama_barang'] ?? '';
+$no_nota = $_POST['no_nota'] ?? '';
+$tgl_penjualan = $_POST['tgl_penjualan'] ?? date('Y-m-d');
 $jumlah_barang = $_POST['jumlah_barang'] ?? 0;
-$harga_barang = $_POST['harga_barang'] ?? '' ;
-$tanggal_masuk = $_POST['tanggal_masuk'] ?? date('Y-m-d');
-$tanggal_kadarluwasa = $_POST['tanggal_kadarluwasa'] ?? date('Y-m-d');
+$id_pembeli = $_POST['id_pembeli'] ?? '' ;
+$id_karyawan = $_POST['id_karyawan'] ?? '';
+$id_barang = $_POST['id_barang'] ?? '';
 
 /**
  * Validation int value
  */
+$no_notaFilter = filter_var($no_nota, FILTER_VALIDATE_INT);
 $jumlah_barangFilter = filter_var($jumlah_barang, FILTER_VALIDATE_INT);
-
+$id_pembeliFilter = filter_var($id_pembeli, FILTER_VALIDATE_INT);
+$id_karyawanFilter = filter_var($id_karyawan, FILTER_VALIDATE_INT);
+$id_barangFilter = filter_var($id_barang, FILTER_VALIDATE_INT);
 /**
  * Validation empty fields
  */
 $isValidated = true;
+if($no_notaFilter === false){
+    $reply['error'] = "No Nota  harus format INT";
+    $isValidated = false;
+}
 if($jumlah_barangFilter === false){
-    $reply['error'] = "No Hp  harus format INT";
+    $reply['error'] = "Jumlah Barang harus format INT";
     $isValidated = false;
 }
-if(empty($kode_barang)){
-    $reply['error'] = 'kode_barang harus diisi';
+if($id_pembeliFilter === false){
+    $reply['error'] = "id pembeli  harus format INT";
     $isValidated = false;
 }
-if(empty($harga_barang)){
-    $reply['error'] = 'Nama harus diisi';
+if($id_karyawanFilter === false){
+    $reply['error'] = "id karyawan harus format INT";
     $isValidated = false;
 }
-if(empty($tanggal_masuk)){
-    $reply['error'] = 'Alamat harus diisi';
+if($id_barangFilter === false){
+    $reply['error'] = "id barang  harus format INT";
     $isValidated = false;
 }
-if(empty($tanggal_kadarluwasa)){
-    $reply['error'] = 'Jabatan harus diisi';
+if(empty($tgl_penjualan)){
+    $reply['error'] = 'Tanggal Penjualan harus diisi';
     $isValidated = false;
 }
-
 /*
  * Jika filter gagal
  */
@@ -74,18 +80,18 @@ if(!$isValidated){
  * Prepare query
  */
 try{
-    $query = "INSERT INTO bukuuu (kode_barang, nama_barang, jumlah_barang, harga_barang, tanggal_masuk, tanggal_kadarluwasa) 
-VALUES (:kode_barang, :nama_barang, :jumlah_barang, :harga_barang, :tanggal_masuk, :tanggal_kadarluwasa)";
+    $query = "INSERT INTO penjualan (no_nota, tgl_penjualan, jumlah_barang, id_pembeli, id_karyawan, id_barang) 
+VALUES (:no_nota, :tgl_penjualan, :jumlah_barang, :id_pembeli, :id_karyawan, :id_barang)";
     $statement = $connection->prepare($query);
     /**
      * Bind params
      */
-    $statement->bindValue(":kode_barang", $kode_barang);
-    $statement->bindValue(":nama_barang", $nama_barang);
-    $statement->bindValue(":jumlah_barang", $jumlah_barang);
-    $statement->bindValue(":harga_barang", $harga_barang);
-    $statement->bindValue(":tanggal_masuk", $tanggal_masuk);
-    $statement->bindValue(":tanggal_kadarluwasa", $tanggal_kadarluwasa, PDO::PARAM_INT);
+    $statement->bindValue(":no_nota", $no_nota, PDO::PARAM_INT);
+    $statement->bindValue(":tgl_penjualan", $tgl_penjualan);
+    $statement->bindValue(":jumlah_barang", $jumlah_barang, PDO::PARAM_INT);
+    $statement->bindValue(":id_pembeli", $id_pembeli, PDO::PARAM_INT);
+    $statement->bindValue(":id_karyawan", $id_karyawan, PDO::PARAM_INT);
+    $statement->bindValue(":id_barang", $id_barang, PDO::PARAM_INT);
     /**
      * Execute query
      */
